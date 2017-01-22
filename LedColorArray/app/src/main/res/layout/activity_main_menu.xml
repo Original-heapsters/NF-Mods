@@ -20,16 +20,17 @@
         android:layout_height="wrap_content">
 
         <ImageButton
+            android:layout_marginRight="30dp"
+            android:background="#FFFFFF"
             android:id="@+id/alert_btn"
             android:clickable="true"
-            android:background="@color/btn_bg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/alert"/>
         <ImageButton
+            android:background="#FFFFFF"
             android:id="@+id/cycle_btn"
             android:clickable="true"
-            android:background="@color/btn_bg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/bicycle"/>
@@ -41,16 +42,19 @@
         android:layout_height="wrap_content">
 
         <ImageButton
+            android:layout_marginTop="30dp"
+            android:layout_marginRight="30dp"
+            android:background="#FFFFFF"
             android:id="@+id/flashlight_btn"
             android:clickable="true"
-            android:background="@color/btn_bg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/flashlight"/>
         <ImageButton
+            android:layout_marginTop="30dp"
+            android:background="#FFFFFF"
             android:id="@+id/camera_btn"
             android:clickable="true"
-            android:background="@color/btn_bg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/camera"/>
@@ -63,16 +67,19 @@
         android:layout_height="wrap_content">
 
         <ImageButton
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="30dp"
+            android:background="#FFFFFF"
             android:id="@+id/morsecode_btn"
             android:clickable="true"
-            android:background="@color/btn_bg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/morsecode"/>
         <ImageButton
+            android:layout_marginTop="30dp"
+            android:background="#FFFFFF"
             android:id="@+id/customize_btn"
             android:clickable="true"
-            android:background="@color/btn_bg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/customize"/>
