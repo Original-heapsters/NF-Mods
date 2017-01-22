@@ -26,7 +26,7 @@
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.example.russell_test.led_array;
+package com.example.nfulinarajr.ledcolorarray;
 
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;

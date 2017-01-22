@@ -1,4 +1,4 @@
-package com.example.russell_test.led_array;
+package com.example.nfulinarajr.ledcolorarray;
 
 import android.content.ComponentName;
 import android.content.Context;
@@ -46,6 +46,8 @@ public class DetectRawIfaceActivity extends AppCompatActivity {
     Button turnOnLEDs;
     Button turnOffLEDs;
     Button applyColor;
+    Button cycleBtn;
+    Button alertBtn;
     TextView doesSupportMods;
     TextView I2cTxt;
     EditText LEDColor;
@@ -81,16 +83,57 @@ public class DetectRawIfaceActivity extends AppCompatActivity {
         }
     };
 
+    public void TurnOnFlashlight()
+    {
+        ModReceiver modReceiver = new ModReceiver();
+        IntentFilter filter = new IntentFilter(ModManager.ACTION_MOD_ATTACH);
+        filter.addAction(ModManager.ACTION_MOD_DETACH);
+        getApplicationContext().registerReceiver(modReceiver, filter, ModManager.PERMISSION_MOD_INTERNAL, null);
+
+        initPersonality();
+
+        RAW_LED_Mgr mgr = new RAW_LED_Mgr();
+
+        mgr.turnAllOn();
+        boolean temp = personality.getRaw().executeRaw(mgr.getCmd());
+        Toast.makeText(getApplicationContext(),"ExecuteCode: " + Arrays.toString(mgr.getCmd()), Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), "Data sent: " + temp,Toast.LENGTH_SHORT).show();
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detect_raw_iface);
 
-        initializeComponents();
-        setupListeners();
+        Intent inIntent = getIntent();
 
-        updateDisplay(supportsMods());
+        int cycleKey = inIntent.getIntExtra("CYCLEKEY",0);
+        int alertKey = inIntent.getIntExtra("ALERTKEY",0);
+
+        if(cycleKey == 1)
+        {
+            setContentView(R.layout.activity_cycle);
+            initializeComponents(1);
+            setupListeners(1);
+        }
+        else if(alertKey == 1)
+        {
+            setContentView(R.layout.activity_alert);
+            initializeComponents(2);
+            setupListeners(2);
+        }
+        else {
+
+            setContentView(R.layout.activity_detect_raw_iface);
+            initializeComponents(3);
+            setupListeners(3);
+        }
+
+
+        //initializeComponents();
+        //setupListeners();
+
+        //updateDisplay(supportsMods());
         initPersonality();
         //establishRAWComms();
     }
@@ -98,10 +141,10 @@ public class DetectRawIfaceActivity extends AppCompatActivity {
     private void initializeComponents() {
         turnOnLEDs = (Button) findViewById(R.id.TurnOnLEDBtn);
         turnOffLEDs = (Button) findViewById(R.id.TurnOffLEDBtn);
-        applyColor = (Button) findViewById(R.id.ApplyNewColor);
-        doesSupportMods = (TextView) findViewById(R.id.SupportsModsPreview);
-        I2cTxt = (TextView) findViewById(R.id.I2CCommand);
-        LEDColor = (EditText) findViewById(R.id.InputLEDValue);
+        //applyColor = (Button) findViewById(R.id.ApplyNewColor);
+        //doesSupportMods = (TextView) findViewById(R.id.SupportsModsPreview);
+        //I2cTxt = (TextView) findViewById(R.id.I2CCommand);
+        //LEDColor = (EditText) findViewById(R.id.InputLEDValue);
 
         ModReceiver modReceiver = new ModReceiver();
         IntentFilter filter = new IntentFilter(ModManager.ACTION_MOD_ATTACH);
@@ -109,6 +152,40 @@ public class DetectRawIfaceActivity extends AppCompatActivity {
         getApplicationContext().registerReceiver(modReceiver, filter, ModManager.PERMISSION_MOD_INTERNAL, null);
     }
 
+    private void initializeComponents(int selectiong) {
+        switch(selectiong)
+        {
+            case 1:
+                cycleBtn = (Button) findViewById(R.id.cycle_go);
+                break;
+            case 2:
+                alertBtn = (Button) findViewById(R.id.alert_go);
+                break;
+            case 3:
+                turnOnLEDs = (Button) findViewById(R.id.TurnOnLEDBtn);
+                turnOffLEDs = (Button) findViewById(R.id.TurnOffLEDBtn);
+                //applyColor = (Button) findViewById(R.id.ApplyNewColor);
+                //doesSupportMods = (TextView) findViewById(R.id.SupportsModsPreview);
+                //I2cTxt = (TextView) findViewById(R.id.I2CCommand);
+                //LEDColor = (EditText) findViewById(R.id.InputLEDValue);
+                break;
+            default:
+                turnOnLEDs = (Button) findViewById(R.id.TurnOnLEDBtn);
+                turnOffLEDs = (Button) findViewById(R.id.TurnOffLEDBtn);
+                //applyColor = (Button) findViewById(R.id.ApplyNewColor);
+                //doesSupportMods = (TextView) findViewById(R.id.SupportsModsPreview);
+                //I2cTxt = (TextView) findViewById(R.id.I2CCommand);
+                //LEDColor = (EditText) findViewById(R.id.InputLEDValue);
+                break;
+        }
+
+
+        ModReceiver modReceiver = new ModReceiver();
+        IntentFilter filter = new IntentFilter(ModManager.ACTION_MOD_ATTACH);
+        filter.addAction(ModManager.ACTION_MOD_DETACH);
+        getApplicationContext().registerReceiver(modReceiver, filter, ModManager.PERMISSION_MOD_INTERNAL, null);
+    }
+/*
     private void setupListeners() {
         mgr = new RAW_LED_Mgr();
         turnOnLEDs.setOnClickListener(new View.OnClickListener() {
@@ -146,6 +223,111 @@ public class DetectRawIfaceActivity extends AppCompatActivity {
                 I2cTxt.setText("Command in human: " + mgr.getCmdString() + "\n\nCommand in computer: " + Arrays.toString(mgr.getCmd()));
             }
         });
+    }
+    */
+
+    private void setupListeners(int selection) {
+        mgr = new RAW_LED_Mgr();
+
+        switch (selection)
+        {
+            case 1:
+                cycleBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        mgr.changeAllLEDs(2);
+                        boolean temp = personality.getRaw().executeRaw(mgr.getCmd());
+                    }
+                });
+                break;
+            case 2:
+                alertBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        mgr.changeAllLEDs(3);
+                        boolean temp = personality.getRaw().executeRaw(mgr.getCmd());
+                    }
+                });
+                break;
+            case 3:
+                turnOnLEDs.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        mgr.turnAllOn();
+                        boolean temp = personality.getRaw().executeRaw(mgr.getCmd());
+                        //Toast.makeText(getApplicationContext(),"ExecuteCode: " + Arrays.toString(mgr.getCmd()), Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getApplicationContext(), "Data sent: " + temp,Toast.LENGTH_SHORT).show();
+
+                        //I2cTxt.setText("Command in human: " + mgr.getCmdString() + "\n\nCommand in computer: " + Arrays.toString(mgr.getCmd()));
+                    }
+                });
+
+                turnOffLEDs.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        mgr.turnAllOff();
+                        boolean temp = personality.getRaw().executeRaw(mgr.getCmd());
+                        //Toast.makeText(getApplicationContext(),"ExecuteCode: " + Arrays.toString(mgr.getCmd()), Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getApplicationContext(), "Data sent: " + temp,Toast.LENGTH_SHORT).show();
+
+                        //I2cTxt.setText("Command in human: " + mgr.getCmdString() + "\n\nCommand in computer: " + Arrays.toString(mgr.getCmd()));
+                    }
+                });
+
+                /*
+                applyColor.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        mgr.changeAllLEDs((Integer.parseInt(LEDColor.getText().toString())));
+                        boolean temp = personality.getRaw().executeRaw(mgr.getCmd());
+                        Toast.makeText(getApplicationContext(),"ExecuteCode: " + Arrays.toString(mgr.getCmd()), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Data sent: " + temp,Toast.LENGTH_SHORT).show();
+
+                        I2cTxt.setText("Command in human: " + mgr.getCmdString() + "\n\nCommand in computer: " + Arrays.toString(mgr.getCmd()));
+                    }
+                });
+                */
+                break;
+            default:
+                turnOnLEDs.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        mgr.turnAllOn();
+                        boolean temp = personality.getRaw().executeRaw(mgr.getCmd());
+                        Toast.makeText(getApplicationContext(),"ExecuteCode: " + Arrays.toString(mgr.getCmd()), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Data sent: " + temp,Toast.LENGTH_SHORT).show();
+
+                        I2cTxt.setText("Command in human: " + mgr.getCmdString() + "\n\nCommand in computer: " + Arrays.toString(mgr.getCmd()));
+                    }
+                });
+
+                turnOffLEDs.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        mgr.turnAllOff();
+                        boolean temp = personality.getRaw().executeRaw(mgr.getCmd());
+                        Toast.makeText(getApplicationContext(),"ExecuteCode: " + Arrays.toString(mgr.getCmd()), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Data sent: " + temp,Toast.LENGTH_SHORT).show();
+
+                        I2cTxt.setText("Command in human: " + mgr.getCmdString() + "\n\nCommand in computer: " + Arrays.toString(mgr.getCmd()));
+                    }
+                });
+
+                applyColor.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        mgr.changeAllLEDs((Integer.parseInt(LEDColor.getText().toString())));
+                        boolean temp = personality.getRaw().executeRaw(mgr.getCmd());
+                        Toast.makeText(getApplicationContext(),"ExecuteCode: " + Arrays.toString(mgr.getCmd()), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Data sent: " + temp,Toast.LENGTH_SHORT).show();
+
+                        I2cTxt.setText("Command in human: " + mgr.getCmdString() + "\n\nCommand in computer: " + Arrays.toString(mgr.getCmd()));
+                    }
+                });
+                break;
+        }
+
+
     }
 
     private void updateDisplay(boolean updateData) {
@@ -268,7 +450,7 @@ public class DetectRawIfaceActivity extends AppCompatActivity {
     /** Initial MDK Personality interface */
     private void initPersonality() {
         if (null == personality) {
-            personality = new RAW_Comm(this, Constants.VID_MDK, Constants.PID_TEMPERATURE);
+            personality = new RAW_Comm(getApplicationContext(), Constants.VID_MDK, Constants.PID_TEMPERATURE);
             personality.registerListener(handler);
         }
     }

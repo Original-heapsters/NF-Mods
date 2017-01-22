@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.Toast;
 
 public class MainMenu extends AppCompatActivity {
     @Override
@@ -57,22 +58,38 @@ public class MainMenu extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Hardware entry point
+                Intent alertIntent = new Intent(getApplicationContext(),DetectRawIfaceActivity.class);
+
+                alertIntent.putExtra("ALERTKEY",1);
+
+                startActivity(alertIntent);
+
             }
         });
 
-        ImageButton cycle = (ImageButton) findViewById(R.id.cycle_btn);
+        final ImageButton cycle = (ImageButton) findViewById(R.id.cycle_btn);
         cycle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Hardware entry point
+                Intent cycleIntent = new Intent(getApplicationContext(),DetectRawIfaceActivity.class);
+
+                cycleIntent.putExtra("CYCLEKEY",1);
+
+                startActivity(cycleIntent);
+
             }
         });
 
         ImageButton flashlight = (ImageButton) findViewById(R.id.flashlight_btn);
+        final Bundle saved = savedInstanceState;
         flashlight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Hardware entry point
+                startActivity(new Intent(getApplicationContext(), DetectRawIfaceActivity.class));
+
+
+
             }
         });
     }
