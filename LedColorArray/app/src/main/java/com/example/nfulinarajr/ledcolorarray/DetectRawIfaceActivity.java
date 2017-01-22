@@ -461,7 +461,7 @@ public class DetectRawIfaceActivity extends AppCompatActivity {
 
         /** Clean up MDK Personality interface */
         if (null != personality) {
-            personality.getRaw().executeRaw(Constants.RAW_CMD_STOP);
+            //personality.getRaw().executeRaw(Constants.RAW_CMD_STOP);
             personality.onDestroy();
             personality = null;
         }
@@ -479,7 +479,7 @@ public class DetectRawIfaceActivity extends AppCompatActivity {
 
             if (null != device) {
 
-                Toast.makeText(getApplicationContext(),"Vendor:" + device.getVendorId()+ "\nProduct:" + device.getProductId(),Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(),"Vendor:" + device.getVendorId()+ "\nProduct:" + device.getProductId(),Toast.LENGTH_LONG).show();
 
                 if ((device.getVendorId() == Constants.VID_MDK
                         && device.getProductId() == Constants.PID_TEMPERATURE)
@@ -488,9 +488,9 @@ public class DetectRawIfaceActivity extends AppCompatActivity {
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            boolean temp = personality.getRaw().executeRaw(Constants.RAW_CMD_INFO);
-                            Toast.makeText(getApplicationContext(),"ExecuteCode: " + Constants.RAW_CMD_INFO, Toast.LENGTH_SHORT).show();
-                            Toast.makeText(getApplicationContext(), "Data sent: " + temp,Toast.LENGTH_SHORT).show();
+                            //boolean temp = personality.getRaw().executeRaw(Constants.RAW_CMD_INFO);
+                            //Toast.makeText(getApplicationContext(),"ExecuteCode: " + Constants.RAW_CMD_INFO, Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(getApplicationContext(), "Data sent: " + temp,Toast.LENGTH_SHORT).show();
                         }
                     }, 5);
 
@@ -525,7 +525,7 @@ public class DetectRawIfaceActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                personality.getRaw().executeRaw(Constants.RAW_CMD_INFO);
+                //personality.getRaw().executeRaw(Constants.RAW_CMD_INFO);
             }
         }, 500);
     }
@@ -625,7 +625,7 @@ public class DetectRawIfaceActivity extends AppCompatActivity {
                     challenge[0] = Constants.TEMP_RAW_COMMAND_CHLGE_RESP;
                     challenge[1] = (byte) aes.length;
                     System.arraycopy(aes, 0, challenge, 2, aes.length);
-                    personality.getRaw().executeRaw(challenge);
+                    //personality.getRaw().executeRaw(challenge);
                 } else {
                     Log.e(Constants.TAG, "AES encrypt failed.");
                 }
