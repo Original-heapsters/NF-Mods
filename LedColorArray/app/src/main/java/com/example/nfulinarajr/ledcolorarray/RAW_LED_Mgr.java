@@ -52,4 +52,7 @@ public class RAW_LED_Mgr {
         return sb.toString();
     }
 
+    public void setIndex(int i, int i1) {
+        cmd[i] = (byte) i1;
+    }
 }

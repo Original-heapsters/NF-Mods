@@ -8,6 +8,7 @@ import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.media.Image;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
@@ -22,6 +23,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -43,11 +45,13 @@ import java.util.logging.LogRecord;
 
 public class DetectRawIfaceActivity extends AppCompatActivity {
 
-    Button turnOnLEDs;
-    Button turnOffLEDs;
-    Button applyColor;
-    Button cycleBtn;
-    Button alertBtn;
+    ImageButton turnOnLEDs;
+    ImageButton turnOffLEDs;
+    ImageButton applyColor;
+    ImageButton cycleBtn;
+    ImageButton cycleRightBtn;
+    ImageButton cycleLeftBtn;
+    ImageButton alertBtn;
     TextView doesSupportMods;
     TextView I2cTxt;
     EditText LEDColor;
@@ -139,8 +143,8 @@ public class DetectRawIfaceActivity extends AppCompatActivity {
     }
 
     private void initializeComponents() {
-        turnOnLEDs = (Button) findViewById(R.id.TurnOnLEDBtn);
-        turnOffLEDs = (Button) findViewById(R.id.TurnOffLEDBtn);
+        turnOnLEDs = (ImageButton) findViewById(R.id.TurnOnLEDBtn);
+        turnOffLEDs = (ImageButton) findViewById(R.id.TurnOffLEDBtn);
         //applyColor = (Button) findViewById(R.id.ApplyNewColor);
         //doesSupportMods = (TextView) findViewById(R.id.SupportsModsPreview);
         //I2cTxt = (TextView) findViewById(R.id.I2CCommand);
@@ -156,22 +160,24 @@ public class DetectRawIfaceActivity extends AppCompatActivity {
         switch(selectiong)
         {
             case 1:
-                cycleBtn = (Button) findViewById(R.id.cycle_go);
+                cycleBtn = (ImageButton) findViewById(R.id.cycle_go);
+                cycleLeftBtn = (ImageButton) findViewById(R.id.cycle_left);
+                cycleRightBtn = (ImageButton) findViewById(R.id.cycle_right);
                 break;
             case 2:
-                alertBtn = (Button) findViewById(R.id.alert_go);
+                alertBtn = (ImageButton) findViewById(R.id.alert_go);
                 break;
             case 3:
-                turnOnLEDs = (Button) findViewById(R.id.TurnOnLEDBtn);
-                turnOffLEDs = (Button) findViewById(R.id.TurnOffLEDBtn);
+                turnOnLEDs = (ImageButton) findViewById(R.id.TurnOnLEDBtn);
+                turnOffLEDs = (ImageButton) findViewById(R.id.TurnOffLEDBtn);
                 //applyColor = (Button) findViewById(R.id.ApplyNewColor);
                 //doesSupportMods = (TextView) findViewById(R.id.SupportsModsPreview);
                 //I2cTxt = (TextView) findViewById(R.id.I2CCommand);
                 //LEDColor = (EditText) findViewById(R.id.InputLEDValue);
                 break;
             default:
-                turnOnLEDs = (Button) findViewById(R.id.TurnOnLEDBtn);
-                turnOffLEDs = (Button) findViewById(R.id.TurnOffLEDBtn);
+                turnOnLEDs = (ImageButton) findViewById(R.id.TurnOnLEDBtn);
+                turnOffLEDs = (ImageButton) findViewById(R.id.TurnOffLEDBtn);
                 //applyColor = (Button) findViewById(R.id.ApplyNewColor);
                 //doesSupportMods = (TextView) findViewById(R.id.SupportsModsPreview);
                 //I2cTxt = (TextView) findViewById(R.id.I2CCommand);
@@ -236,6 +242,24 @@ public class DetectRawIfaceActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         mgr.changeAllLEDs(2);
+                        boolean temp = personality.getRaw().executeRaw(mgr.getCmd());
+                    }
+                });
+
+                cycleRightBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        mgr.changeAllLEDs(2);
+                        mgr.setIndex(1,1);
+                        boolean temp = personality.getRaw().executeRaw(mgr.getCmd());
+                    }
+                });
+
+                cycleLeftBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        mgr.changeAllLEDs(2);
+                        mgr.setIndex(1,2);
                         boolean temp = personality.getRaw().executeRaw(mgr.getCmd());
                     }
                 });
