@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">LedColorArray</string>
+    <string name="cmd_submit">SUBMIT</string>
 </resources>
