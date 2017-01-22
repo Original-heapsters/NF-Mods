@@ -5,12 +5,36 @@
     android:gravity="center"
     android:layout_height="match_parent">
 
-    <ImageButton
-        android:id="@+id/cycle_go"
-        android:background="#FFFFFF"
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:src="@drawable/bicycle"/>
+        android:layout_height="wrap_content">
+
+        <ImageButton
+            android:layout_marginRight="15dp"
+            android:id="@+id/cycle_left"
+            android:background="#FFFFFF"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/leftsignal"/>
+
+        <ImageButton
+            android:layout_marginRight="15dp"
+            android:id="@+id/cycle_go"
+            android:background="#FFFFFF"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/bicycle"/>
+
+        <ImageButton
+            android:id="@+id/cycle_right"
+            android:background="#FFFFFF"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/rightsignal"/>
+    </LinearLayout>
 
 </LinearLayout>
